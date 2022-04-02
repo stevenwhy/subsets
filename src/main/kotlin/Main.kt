@@ -1,3 +1,5 @@
+import java.util.*
+
 fun main() {
 
     println("Here is the list of subsets: ${findSubsets(listOf(1,3))}")
@@ -5,6 +7,9 @@ fun main() {
 
     println("Here is the list of subsets no dupes: ${findSubsetsNoDupes(listOf(1,3,3))}")
     println("Here is the list of subsets no dupes: ${findSubsetsNoDupes(listOf(1,5,3,3))}")
+
+    println("Find permutations: ${findPermutations(listOf(1,3,5))}")
+    println("Find permutations: ${findPermutations(listOf(2,3))}")
 }
 // O(2^n) time and space
 fun findSubsets(list: List<Int>): MutableList<List<Int>> {
@@ -47,6 +52,38 @@ fun findSubsetsNoDupes(list: List<Int>): MutableList<List<Int>> {
             j++
         }
         lastNumber = currentNumber
+        i++
+    }
+    return result
+}
+
+// O(n*n!) time and space
+fun findPermutations(list: List<Int>): MutableList<List<Int>> {
+    val result = mutableListOf<List<Int>>()
+    val queue: Queue<List<Int>> = LinkedList()
+    queue.add(listOf())
+    var i = 0
+    while(i < list.size) {
+        // i is an index of input list
+        val currentNumber = list[i]
+        var j = 0
+        val queueSize = queue.size
+        while(j < queueSize) {
+            // j is index of each perm
+            val currentPerm = queue.poll()
+            var k = 0
+            val permSize = currentPerm.size + 1
+            while(k < permSize) {
+                // k is each position in the perm
+                val newPerm = currentPerm.toMutableList()
+                newPerm.add(k, currentNumber)
+                if(newPerm.size == list.size) {
+                    result.add(newPerm)
+                } else queue.add(newPerm)
+                k++
+            }
+            j++
+        }
         i++
     }
     return result
