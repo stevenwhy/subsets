@@ -10,6 +10,9 @@ fun main() {
 
     println("Find permutations: ${findPermutations(listOf(1,3,5))}")
     println("Find permutations: ${findPermutations(listOf(2,3))}")
+
+    println("Find letter case permutations: ${findCasePermutations("ad52")}")
+    println("Find letter case permutations: ${findCasePermutations("ab7c")}")
 }
 // O(2^n) time and space
 fun findSubsets(list: List<Int>): MutableList<List<Int>> {
@@ -82,6 +85,30 @@ fun findPermutations(list: List<Int>): MutableList<List<Int>> {
                 } else queue.add(newPerm)
                 k++
             }
+            j++
+        }
+        i++
+    }
+    return result
+}
+
+//O(n*2^n) time and space
+fun findCasePermutations(str: String): MutableList<String> {
+    val result = mutableListOf(str)
+    var i = 0
+    while(i < str.length) {
+        if(!str[i].isLetter()) {
+            i++
+            continue
+        }
+        var j = 0
+        val count = result.size
+        while(j < count) {
+            val newStr = result[j]
+            val sb = StringBuilder(newStr)
+            if(newStr[i].isLowerCase()) sb.setCharAt(i, newStr[i].uppercaseChar())
+            else sb.setCharAt(i, newStr[i].lowercaseChar())
+            result.add(sb.toString())
             j++
         }
         i++
