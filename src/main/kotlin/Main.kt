@@ -13,6 +13,46 @@ fun main() {
 
     println("Find letter case permutations: ${findCasePermutations("ad52")}")
     println("Find letter case permutations: ${findCasePermutations("ab7c")}")
+
+    println("Find balanced parentheses: ${findBalancedParentheses(1)}")
+    println("Find balanced parentheses: ${findBalancedParentheses(3)}")
+}
+
+fun findBalancedParentheses(count: Int): MutableList<String> {
+    val result = mutableListOf<String>()
+    if(count < 1) return result
+    result.add("()")
+    var i = 1
+    while(i < count) {
+
+        var j = 0
+        val length = result.size
+        val storage = result.toMutableList()
+        result.removeAll { true }
+        while(j < length) {
+            var tempBuilder = ArrayDeque<Char>(storage[j].toMutableList())
+            tempBuilder.addFirst('(')
+            tempBuilder.addLast(')')
+            result.add(tempBuilder.joinToString(separator = ""))
+
+            // add () to the beginning
+            tempBuilder = ArrayDeque<Char>(storage[j].toMutableList())
+            tempBuilder.addFirst(')')
+            tempBuilder.addFirst('(')
+            result.add(tempBuilder.joinToString(separator = ""))
+
+            if(j < length-1) {
+                tempBuilder = ArrayDeque<Char>(storage[j].toMutableList())
+                tempBuilder.addLast('(')
+                tempBuilder.addLast(')')
+                result.add(tempBuilder.joinToString(separator = ""))
+            }
+            j++
+        }
+        i++
+    }
+
+    return result
 }
 // O(2^n) time and space
 fun findSubsets(list: List<Int>): MutableList<List<Int>> {
